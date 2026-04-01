@@ -233,7 +233,7 @@ const page = () => {
                       )}
                     </div>
                     <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[item.status]}`}
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${statusColors[item.status ?? "pending"]}`}
                     >
                       {item.status}
                     </span>

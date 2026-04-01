@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Formik, Field, Form } from "formik";
@@ -10,7 +11,7 @@ import { fetcher } from "@/lib/services";
 import { Client } from "@/lib/types";
 import { clientValidationSchema } from "@/lib/validationSchema";
 
-const AddClientPage = () => {
+const AddClientForm = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -172,5 +173,17 @@ const AddClientPage = () => {
     </div>
   );
 };
+
+const AddClientPage = () => (
+  <Suspense
+    fallback={
+      <div className="min-h-screen bg-gray-900 flex justify-center items-center text-2xl">
+        <p className="animate-bounce">loading content.....</p>
+      </div>
+    }
+  >
+    <AddClientForm />
+  </Suspense>
+);
 
 export default AddClientPage;

@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 export const GET = async (
   req: Request,
-  { params }: { params: { taskid: string } },
+  { params }: { params: Promise<{ taskid: string }> },
 ) => {
   await connectDB();
   const session = await getServerSession();

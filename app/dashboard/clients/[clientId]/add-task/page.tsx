@@ -1,7 +1,7 @@
 "use client";
-import { use, useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
+import { Suspense } from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Formik, Field, Form } from "formik";
@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { Task, taskStatus } from "@/lib/types";
 import { taskValidationSchema } from "@/lib/validationSchema";
 
-const AddTaskPage = () => {
+const AddTaskForm = () => {
   const { clientId } = useParams();
   const router = useRouter();
   const { data: Session } = useSession();
@@ -171,6 +171,20 @@ const AddTaskPage = () => {
         </Formik>
       </div>
     </div>
+  );
+};
+
+const AddTaskPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-900 flex justify-center items-center">
+          <p className="text-2xl animate-bounce">loading content....</p>
+        </div>
+      }
+    >
+      <AddTaskForm />
+    </Suspense>
   );
 };
 
