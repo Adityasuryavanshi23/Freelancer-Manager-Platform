@@ -22,7 +22,7 @@ export const GET = async (req: Request) => {
 
     const tasks = fetchAll
       ? await Task.find()
-      : await Task.find({ userEmail: session?.user.email });
+      : await Task.find({ userEmail: session?.user.email }).sort({ createdAt: -1 });
 
     return NextResponse.json({
       message: fetchAll

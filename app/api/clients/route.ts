@@ -25,7 +25,9 @@ export const GET = async (req: Request) => {
 
     const clients = fetchAllClients
       ? await Client.find()
-      : await Client.find({ userEmail: session?.user.email });
+      : await Client.find({ userEmail: session?.user.email }).sort({
+          createdAt: -1,
+        });
     const tasks = await Task.find();
 
     const clientWithtasks = clients.map((client) => ({

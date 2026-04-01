@@ -1,38 +1,44 @@
 "use client";
-import { useState } from "react";
-import Link from "next/link";
+
 import { IoArrowBack } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Formik, Field, Form } from "formik";
-import * as Yup from "yup";
-import { addClients } from "@/lib/services";
+import { addClients, updateClient } from "@/lib/services";
 import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import { fetcher } from "@/lib/services";
+import { Client } from "@/lib/types";
+import { clientValidationSchema } from "@/lib/validationSchema";
 
 const AddClientPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Client name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    company: Yup.string(),
-  });
+  const searchParams = useSearchParams();
+  const editClientId = searchParams.get("id");
+
+  const { data } = useSWR(`clients/${editClientId}`, fetcher);
+
+  const clientData: Client = data?.clientData || {};
+  console.log(clientData);
 
   const handleSubmit = async (
     values: { name: string; email: string; company: string },
     { setSubmitting, resetForm, setStatus }: any,
   ) => {
-    const result = await addClients({
-      ...values,
-      userEmail: data?.user?.email || "",
-    });
+    const result = editClientId
+      ? await updateClient(editClientId, values)
+      : await addClients({
+          ...values,
+          userEmail: session?.user?.email || "",
+        });
     if (result?.error) {
       setSubmitting(false);
       setStatus(result.error);
       return;
     }
     resetForm();
-    router.push("/dashboard/clients");
+    router.back();
     console.log("add client form data", result);
     try {
     } catch (error) {
@@ -57,25 +63,34 @@ const AddClientPage = () => {
       <div className="w-full max-w-md border border-gray-800 rounded-2xl p-8 bg-black/30 backdrop-blur-sm">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
-          <Link
-            href="/dashboard"
+          <button
+            onClick={() => router.back()}
             className="text-gray-400 hover:text-white transition-colors"
           >
             <IoArrowBack size={24} />
-          </Link>
+          </button>
           <div>
-            <h1 className="text-2xl font-bold text-white">Add New Client</h1>
+            <h1 className="text-2xl font-bold text-white">
+              {editClientId ? "Edit Client" : "Add New Client"}
+            </h1>
             <p className="text-gray-400 text-sm mt-1">
-              Fill in the client details
+              {editClientId
+                ? "Edit the client details"
+                : "Fill in the client details"}
             </p>
           </div>
         </div>
 
         {/* Form */}
         <Formik
-          initialValues={{ name: "", email: "", company: "" }}
+          initialValues={{
+            name: clientData?.name || "",
+            email: clientData?.email || "",
+            company: clientData?.company || "",
+          }}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={clientValidationSchema}
+          enableReinitialize={true}
         >
           {({ touched, errors, isSubmitting, status }) => {
             return (
@@ -92,7 +107,7 @@ const AddClientPage = () => {
                   />
                   {touched.name && errors.name && (
                     <div className="text-red-500 text-sm mt-1">
-                      {errors.name}
+                      {errors.name as string}
                     </div>
                   )}
                 </div>
@@ -109,7 +124,7 @@ const AddClientPage = () => {
                   />
                   {touched.email && errors.email && (
                     <div className="text-red-500 text-sm mt-1">
-                      {errors.email}
+                      {errors.email as string}
                     </div>
                   )}
                 </div>
@@ -131,17 +146,24 @@ const AddClientPage = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all duration-200 mt-3"
+                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all duration-200 mt-3 cursor-pointer"
                 >
-                  {isSubmitting ? "Adding...." : "Add Client"}
+                  {editClientId
+                    ? isSubmitting
+                      ? "Updating...."
+                      : "Update Client"
+                    : isSubmitting
+                      ? "Adding...."
+                      : "Add Client"}
                 </button>
 
-                <Link
-                  href="/dashboard"
-                  className="block w-full text-center bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold py-3 rounded-xl transition-all duration-200 border border-gray-700"
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="block w-full text-center cursor-pointer bg-gray-800 hover:bg-gray-700 text-gray-300 font-semibold py-3 rounded-xl transition-all duration-200 border border-gray-700"
                 >
                   Cancel
-                </Link>
+                </button>
               </Form>
             );
           }}

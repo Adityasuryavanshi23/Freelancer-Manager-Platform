@@ -38,7 +38,7 @@ export const GET = async (
 
     const clientDataWithTasks = {
       ...clientData.toObject(),
-      tasks: await Task.find({ clientId: clientid }),
+      tasks: await Task.find({ clientId: clientid }).sort({ createdAt: -1 }),
     };
 
     return NextResponse.json(
@@ -77,7 +77,7 @@ export const DELETE = async (
     const { clientid } = await params;
 
     const DeletedclientTasks = await Task.find({ clientId: clientid });
-    const clientTasks = await Task.findByIdAndDelete(clientid);
+    const clientTasks = await Task.deleteMany({ clientId: clientid });
     const deletClient = await Client.findByIdAndDelete({ _id: clientid });
     if (deletClient?.userEmail !== session.user.email) {
       return NextResponse.json(

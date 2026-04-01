@@ -3,22 +3,15 @@ import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
 
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { Formik, Field, Form } from "formik";
-import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { loginValidationSchema } from "@/lib/validationSchema";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
-  const { data, status } = useSession();
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-  });
 
   const handleSubmit = async (
     values: { email: string; password: string },
@@ -48,8 +41,8 @@ const LoginPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center ">
-      <div className="w-full max-w-md border border-gray-800 rounded-2xl p-8">
+    <div className="min-h-screen  bg-gray-800 flex items-center justify-center ">
+      <div className="w-full max-w-md border bg-black/90 border-gray-800 rounded-2xl p-8">
         <div className="text-center mb-8">
           {" "}
           <Link href={"/"} className="-mt-4">
@@ -99,7 +92,7 @@ const LoginPage = () => {
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={loginValidationSchema}
           className="flex flex-col gap-4"
         >
           {({ errors, touched, isSubmitting, status }) => (
@@ -115,7 +108,7 @@ const LoginPage = () => {
                   name="email"
                   type="email"
                   placeholder="you@example.com"
-                  className={`w-full bg-gray-800 border border-gray-700 text-white rounded-xl  mb-4 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition-colors ${errors.email && touched.email ? "border-red-500" : "border-gray-700"}`}
+                  className={`w-full bg-gray-800 border border-gray-700 text-white rounded-xl  mb-2 px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition-colors ${errors.email && touched.email ? "border-red-500" : "border-gray-700"}`}
                 />
                 {errors.email && touched.email && (
                   <div className="text-red-500 text-sm mt-1">
@@ -132,7 +125,7 @@ const LoginPage = () => {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className={`w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 transition-colors ${errors.password && touched.password ? "border-red-500" : "border-gray-700"}`}
+                  className={`w-full bg-gray-800 border border-gray-700 text-white rounded-xl px-4 mb-2 py-3 text-sm focus:outline-none focus:border-blue-500 transition-colors ${errors.password && touched.password ? "border-red-500" : "border-gray-700"}`}
                 />
                 {errors.password && touched.password && (
                   <div className="text-red-500 text-sm mt-1">

@@ -6,7 +6,10 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
 
-const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +34,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable)}
+      className={` ${geistSans.variable} ${geistMono.variable} font-sans ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-full ">
+      <body className="min-h-full bg-gray-800 text-white">
         <SessionWrapper>
           <Navbar />
           {children}
