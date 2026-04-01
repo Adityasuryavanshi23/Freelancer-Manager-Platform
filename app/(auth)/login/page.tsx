@@ -41,7 +41,7 @@ const LoginPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen  bg-gray-800 flex items-center justify-center ">
+    <div className="min-h-screen p-6  bg-gray-800 flex items-center justify-center ">
       <div className="w-full max-w-md border bg-black/90 border-gray-800 rounded-2xl p-8">
         <div className="text-center mb-8">
           {" "}

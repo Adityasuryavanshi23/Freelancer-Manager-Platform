@@ -52,7 +52,7 @@ const page = () => {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-2xl">
+      <div className="min-h-screen flex justify-center items-center text-[1.5rem] p-5">
         <p className="animate-bounce">
           pls login first to get the content{" "}
           <a href="/login" className="text-blue-600 underline">
