@@ -114,7 +114,7 @@ const Page = () => {
               </button>
             </div>
 
-            <div className="flex gap-2">
+            <div className="hidden gap-2 md:flex">
               <p className="text-gray-300 text-sm capitalize">
                 by client name : {clientDetails.name}
               </p>
@@ -124,6 +124,16 @@ const Page = () => {
                 <span className="normal-case"> {clientDetails.email}</span>
               </p>
             </div>
+          </div>
+          <div className=" gap-2 flex md:hidden mt-5">
+            <p className="text-gray-300 text-xs capitalize">
+              by client name : {clientDetails.name}
+            </p>
+            <span className="text-gray-400">|</span>
+            <p className="text-gray-300 text-xs capitalize">
+              by client email :{" "}
+              <span className="normal-case"> {clientDetails.email}</span>
+            </p>
           </div>
         </div>
       </div>

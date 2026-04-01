@@ -71,7 +71,7 @@ const LoginPage = () => {
           <button
             onClick={() => {
               setLoadingProvider("github");
-              signIn("github", { callbackUrl: "/" });
+              signIn("github", { callbackUrl: "/dashboard" });
             }}
             className={`flex items-center justify-center gap-3 w-full py-3 px-4 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-xl border border-gray-700 transition-all duration-200 cursor-pointer ${loadingProvider === "github" ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
           >

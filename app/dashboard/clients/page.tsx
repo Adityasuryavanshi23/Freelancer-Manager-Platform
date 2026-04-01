@@ -43,7 +43,7 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-12  ">
+    <div className="min-h-screen bg-gray-900 pt-6   p-3 sm:p-6  ">
       {isLoading && (
         <p className="text-white min-h-screen  text-xl flex items-center justify-center">
           Loading...

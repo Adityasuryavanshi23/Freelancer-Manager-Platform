@@ -60,7 +60,7 @@ const AddClientForm = () => {
     );
   }
   return (
-    <div className=" py-8 bg-gray-900  flex justify-center ">
+    <div className=" py-8 p-4 sm:p-6 bg-gray-900  flex justify-center ">
       <div className="w-full max-w-md border border-gray-800 rounded-2xl p-8 bg-black/30 backdrop-blur-sm">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">

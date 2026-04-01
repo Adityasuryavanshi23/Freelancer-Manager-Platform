@@ -69,15 +69,15 @@ const Page = () => {
         <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
           {/* Avatar & Name */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
+            <div className="sm:w-16 sm:h-16 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
               J
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl font-semibold max-w-full break-words text-white capitalize">
+              <h1 className=" text-xs sm:text-xl font-semibold max-w-full break-words text-white capitalize">
                 Client Name :{" "}
                 <span className="font-semibold">{clientData?.name}</span>
               </h1>
-              <p className="text-gray-200 font-semibold flex items-center gap-1 mt-1">
+              <p className=" text-xs sm:text-xl  text-gray-200 font-semibold flex items-center gap-1 mt-1">
                 <MdBusiness size={16} />
                 Company :
                 <span className="font-semibold capitalize ">
@@ -92,7 +92,7 @@ const Page = () => {
           {/* Email */}
           <div className="flex items-center gap-2 text-white mb-4">
             <MdEmail className="text-gray-400 " size={18} />
-            <p>
+            <p className="text-sm sm:text-base">
               {" "}
               Client Email :{" "}
               <span className="font-semibold text-gray-300">

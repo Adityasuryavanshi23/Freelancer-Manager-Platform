@@ -104,14 +104,14 @@ const page = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 p-6 ">
-      <main className="max-w-7xl mx-auto px-8">
+      <main className="max-w-7xl mx-auto lg:px-3 xl:px-7 ">
         {/* Header */}
         <div className="mb-8 flex items-center  justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
               Dashboard
             </h1>
-            <p className=" text-gray-400 mt-1">
+            <p className=" text-xs text-gray-400 mt-1">
               Welcome back,{" "}
               <span className="font-semibold text-white">
                 {session?.user?.name}
@@ -120,7 +120,7 @@ const page = () => {
           </div>
           <div>
             <Link href="/dashboard/clients/add">
-              <button className="bg-blue-600 hover:bg-blue-700 cursor-pointer active:scale-90 transition-all ease-in rounded-lg font-semibold py-2 px-6 ">
+              <button className="bg-blue-600 hover:bg-blue-700 cursor-pointer active:scale-90 transition-all ease-in rounded-lg font-semibold py-2 text-xs  px-6 ">
                 Add Client
               </button>
             </Link>
@@ -128,7 +128,7 @@ const page = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <div className="grid grid-cols-1  min-[477px]:grid-cols-2 sm:grid-cols-3 md:grid-cols-2  lg:grid-cols-4    xl:grid-cols-5 gap-3 md:gap-6 mb-8">
           {stats.map((stat, index) => (
             <Link key={index} href={stat.href || "#"}>
               <div
@@ -217,7 +217,7 @@ const page = () => {
                   key={item._id}
                   href={`/dashboard/clients/${item?.clientId}/tasks/${item?._id}`}
                 >
-                  <div className="flex items-center justify-between p-4 border border-gray-700 rounded-lg hover:bg-gray-700 cursor-pointer active:bg-gray-500/60 bg-gray-800 transition-colors">
+                  <div className="flex mt-4 items-center justify-between p-4    border border-gray-700 rounded-lg hover:bg-gray-700 cursor-pointer active:bg-gray-500/60 bg-gray-800 transition-colors">
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800 dark:text-white">
                         Task Title : {item.title}

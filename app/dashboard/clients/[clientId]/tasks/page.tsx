@@ -34,7 +34,7 @@ const page = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900  ">
+    <div className="min-h-screen bg-gray-900 p-4 sm:p-6  ">
       {isLoading && (
         <div className="flex justify-center items-center min-h-screen">
           Loading...
@@ -50,7 +50,7 @@ const page = () => {
           <span>Back</span>
         </button>
 
-        <div className="flex  gap-8">
+        <div className="flex md:flex-row flex-col  gap-8">
           <p className="capitalize">
             client Company :{" "}
             <span>
