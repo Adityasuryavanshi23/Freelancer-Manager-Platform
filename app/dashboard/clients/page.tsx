@@ -29,6 +29,15 @@ const Page = () => {
     router.push(`/dashboard/clients/add?id=${clientId}`);
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-white min-h-screen  text-xl flex items-center justify-center animate-bounce">
+          Loading All clients Details...
+        </p>
+      </div>
+    );
+  }
   if (!session) {
     return (
       <div className="min-h-screen flex justify-center items-center text-2xl">
@@ -44,11 +53,6 @@ const Page = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 pt-6   p-3 sm:p-6  ">
-      {isLoading && (
-        <p className="text-white min-h-screen  text-xl flex items-center justify-center">
-          Loading...
-        </p>
-      )}
       <div className="max-w-7xl mx-auto mb-4 flex justify-center items-center ">
         <p className="text-2xl font-semibold text-blue-400">All Clients</p>
       </div>

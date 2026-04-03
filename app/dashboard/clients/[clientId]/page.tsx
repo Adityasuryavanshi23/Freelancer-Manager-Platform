@@ -20,6 +20,13 @@ const Page = () => {
   const { data, isLoading } = useSWR(`/clients/${clientId}`, fetcher);
 
   const clientData: Client = data?.clientData || {};
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading Clients Details ...</p>
+      </div>
+    );
+  }
 
   if (!data) {
     return (
@@ -31,13 +38,6 @@ const Page = () => {
         >
           Go Back
         </span>
-      </div>
-    );
-  }
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Loading...</p>
       </div>
     );
   }
