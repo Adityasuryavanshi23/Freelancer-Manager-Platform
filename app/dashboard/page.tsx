@@ -173,7 +173,7 @@ const page = () => {
                         {item.company
                           ? item.company
                               .split(" ")
-                              .map((w: string) => w.charAt(0).toUpperCase())
+                              .map((w: string) => w.charAt(0).toUpperCase()).slice(0, 3)
                               .join("")
                           : item.name.charAt(0).toUpperCase()}
                       </div>

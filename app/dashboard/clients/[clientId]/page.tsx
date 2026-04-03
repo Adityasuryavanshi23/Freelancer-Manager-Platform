@@ -18,7 +18,7 @@ const Page = () => {
   const { clientId } = useParams();
 
   const { data, isLoading } = useSWR(`/clients/${clientId}`, fetcher);
-
+  console.log(data);
   const clientData: Client = data?.clientData || {};
   if (isLoading) {
     return (
@@ -53,6 +53,13 @@ const Page = () => {
     router.push(`/dashboard/clients/`);
   };
 
+  const clientInitials =
+    clientData?.company
+      ?.split(" ")
+      .map((w: String) => w.charAt(0).toUpperCase())
+      .slice(0, 3)
+      .join("") || clientData?.name.charAt(0).toUpperCase();
+
   return (
     <div className="min-h-screen bg-gray-900">
       <div className="max-w-3xl mx-auto pt-8 px-4">
@@ -70,7 +77,7 @@ const Page = () => {
           {/* Avatar & Name */}
           <div className="flex items-center gap-4 mb-6">
             <div className="sm:w-16 sm:h-16 w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl">
-              J
+              {clientInitials}
             </div>
             <div className="flex-1 min-w-0">
               <h1 className=" text-xs sm:text-xl font-semibold max-w-full break-words text-white capitalize">

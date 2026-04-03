@@ -28,7 +28,7 @@ const handler = NextAuth({
         ) {
           return { id: "1", name: "aditya", email: credentials?.email };
         }
-        throw new Error("email not found");
+        throw new Error("invalid credentials");
       },
     }),
   ],

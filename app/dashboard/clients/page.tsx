@@ -32,7 +32,7 @@ const Page = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-white min-h-screen  text-xl flex items-center justify-center animate-bounce">
+        <p className="text-white min-h-screen  text-xl flex items-center justify-center ">
           Loading All clients Details...
         </p>
       </div>
