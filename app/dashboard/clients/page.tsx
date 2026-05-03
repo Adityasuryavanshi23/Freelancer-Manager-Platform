@@ -7,12 +7,29 @@ import Link from "next/link";
 import { CiSquarePlus } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { Client } from "@/lib/types";
+import { useEffect, useState } from "react";
 
 const Page = () => {
-  const { data, error, isLoading, mutate } = useSWR("/clients", fetcher);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState<string>("");
+  const { data, error, isLoading, mutate, isValidating } = useSWR(
+    "/clients" +
+      (debouncedSearchTerm
+        ? `?search=${encodeURIComponent(debouncedSearchTerm)}`
+        : ""),
+    fetcher,
+  );
+  console.log("error", error);
   const { data: session } = useSession();
   const router = useRouter();
   const clients: Client[] = data?.clients || [];
+
+  useEffect(() => {
+    const delaytimer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm.trim().replace(/\s+/g, " "));
+    }, 400);
+    return () => clearTimeout(delaytimer);
+  }, [searchTerm]);
 
   const onDelete = async (clientId: string) => {
     try {
@@ -20,7 +37,7 @@ const Page = () => {
       mutate();
       console.log(res);
     } catch (error) {
-      console.log("fialed to delete a client right now", error);
+      console.log("failed to delete a client right now", error);
     }
   };
 
@@ -29,7 +46,7 @@ const Page = () => {
     router.push(`/dashboard/clients/add?id=${clientId}`);
   };
 
-  if (isLoading) {
+  if (isLoading && !debouncedSearchTerm) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-white min-h-screen  text-xl flex items-center justify-center ">
@@ -38,6 +55,7 @@ const Page = () => {
       </div>
     );
   }
+
   if (!session) {
     return (
       <div className="min-h-screen flex justify-center items-center text-2xl">
@@ -53,20 +71,37 @@ const Page = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 pt-6   p-3 sm:p-6  ">
-      <div className="max-w-7xl mx-auto mb-4 flex justify-center items-center ">
+      <div className="max-w-7xl mx-auto mb-4 flex justify-between mb-8">
         <p className="text-2xl font-semibold text-blue-400">All Clients</p>
+        <div>
+          <input
+            type="search"
+            placeholder="Search clients..."
+            className=" border rounded-md px-4 py-2 bg-gray-800 border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto">
         {clients.length === 0 ? (
-          <div className="text-center mt-7 animate-pulse">
-            There is no client available{" "}
-            <Link href={"/dashboard/clients/add"}>
-              <span className="bg-blue-600/80 ml-2  hover:bg-blue-600 font-semibold px-4 py-1 rounded-lg ">
-                Add client
-              </span>
-            </Link>
-          </div>
+          debouncedSearchTerm ? (
+            <div className="text-center mt-7 animate-pulse">
+              {debouncedSearchTerm && isValidating
+                ? `searching for clients "${debouncedSearchTerm}" `
+                : data?.message}
+            </div>
+          ) : (
+            <div className="text-center mt-7 animate-pulse">
+              There is no client available{" "}
+              <Link href={"/dashboard/clients/add"}>
+                <span className="bg-blue-600/80 ml-2  hover:bg-blue-600 font-semibold px-4 py-1 rounded-lg ">
+                  Add client
+                </span>
+              </Link>
+            </div>
+          )
         ) : (
           <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {clients.map((client: Client) => (

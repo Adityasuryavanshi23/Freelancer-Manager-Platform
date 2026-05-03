@@ -5,6 +5,7 @@ import { Client } from "@/models/ClientSchema";
 import { Task } from "@/models/TaskSchema";
 import { getServerSession } from "next-auth";
 
+// Get All Clients For a User With Their Tasks
 export const GET = async (req: Request) => {
   const session = await getServerSession();
 
@@ -21,11 +22,22 @@ export const GET = async (req: Request) => {
 
   try {
     const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search") || "";
+    const query: any = {
+      userEmail: session?.user?.email,
+    };
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { company: { $regex: search, $options: "i" } },
+      ];
+    }
     const fetchAllClients = searchParams.get("all") === "true";
 
     const clients = fetchAllClients
       ? await Client.find()
-      : await Client.find({ userEmail: session?.user.email }).sort({
+      : await Client.find(query).sort({
           createdAt: -1,
         });
     const tasks = await Task.find();
@@ -38,9 +50,14 @@ export const GET = async (req: Request) => {
     }));
 
     if (clientWithtasks.length === 0) {
-      return NextResponse.json({
-        message: `No Clients Has Been Created Yet  for ${session.user.email}`,
-      });
+      return NextResponse.json(
+        {
+          message: search
+            ? "No clients found for this searchTerm : " + search
+            : `No Clients Has Been Created Yet  for ${session.user.email}`,
+        },
+        { status: 200 },
+      );
     }
     return NextResponse.json(
       {
@@ -58,7 +75,7 @@ export const GET = async (req: Request) => {
     );
   }
 };
-
+// Create a New Client
 export const POST = async (req: Request) => {
   const session = await getServerSession();
 
